@@ -1,0 +1,13 @@
+{
+  "name": "Friend Spotlight: Trials & Forge",
+  "consumable": "Energy Battery",
+  "price": "1000000000000000000",
+  "outcomes": [
+    { "name": "Basic Core Fragment", "chanceBps": 5000, "reward": "0" },
+    { "name": "Neon Visor Lens", "chanceBps": 2700, "reward": "50000000000000000" },
+    { "name": "Titanium Plating", "chanceBps": 1400, "reward": "100000000000000000" },
+    { "name": "Aura Spark Emitter", "chanceBps": 600, "reward": "250000000000000000" },
+    { "name": "Overclocked Jetpack", "chanceBps": 250, "reward": "500000000000000000" },
+    { "name": "Mythic Astral Crown", "chanceBps": 50, "reward": "2000000000000000000" }
+  ]
+}
