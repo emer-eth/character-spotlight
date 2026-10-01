@@ -107,8 +107,8 @@ export function BallRushGame({ character, sprites, onReward, onExit, reducedMoti
         dy *= 0.7071;
       }
 
-      state.px = Math.max(20, Math.min(740, state.px + dx * state.speed * dt));
-      state.py = Math.max(30, Math.min(340, state.py + dy * state.speed * dt));
+      state.px = Math.max(25, Math.min(615, state.px + dx * state.speed * dt));
+      state.py = Math.max(35, Math.min(295, state.py + dy * state.speed * dt));
 
       // Spawn pickups
       pickupSpawnTimer += dt;
@@ -117,8 +117,8 @@ export function BallRushGame({ character, sprites, onReward, onExit, reducedMoti
         if (state.pickups.length < 6) {
           const isPart = Math.random() < 0.35 + character.upgrades.visor * 0.05;
           state.pickups.push({
-            x: 40 + Math.random() * 680,
-            y: 40 + Math.random() * 280,
+            x: 40 + Math.random() * 560,
+            y: 40 + Math.random() * 240,
             type: isPart ? "part" : "battery",
             name: isPart ? "Core Fragment" : undefined,
           });
@@ -130,10 +130,10 @@ export function BallRushGame({ character, sprites, onReward, onExit, reducedMoti
       if (ballSpawnTimer > 7 && state.balls.length < 8) {
         ballSpawnTimer = 0;
         state.balls.push({
-          x: Math.random() > 0.5 ? 20 : 740,
-          y: Math.random() * 320,
-          vx: (Math.random() - 0.5) * 360,
-          vy: (Math.random() - 0.5) * 360,
+          x: Math.random() > 0.5 ? 30 : 610,
+          y: 40 + Math.random() * 240,
+          vx: (Math.random() - 0.5) * 320,
+          vy: (Math.random() - 0.5) * 320,
           radius: 12 + Math.random() * 8,
           color: "#ef917d",
         });
@@ -144,11 +144,11 @@ export function BallRushGame({ character, sprites, onReward, onExit, reducedMoti
         b.x += b.vx * dt;
         b.y += b.vy * dt;
 
-        // Bounce off walls
-        if (b.x - b.radius < 0) { b.x = b.radius; b.vx *= -1; }
-        if (b.x + b.radius > 760) { b.x = 760 - b.radius; b.vx *= -1; }
-        if (b.y - b.radius < 0) { b.y = b.radius; b.vy *= -1; }
-        if (b.y + b.radius > 360) { b.y = 360 - b.radius; b.vy *= -1; }
+        // Bounce off arena walls [0, 640] x [0, 320]
+        if (b.x - b.radius < 4) { b.x = 4 + b.radius; b.vx *= -1; }
+        if (b.x + b.radius > 636) { b.x = 636 - b.radius; b.vx *= -1; }
+        if (b.y - b.radius < 4) { b.y = 4 + b.radius; b.vy *= -1; }
+        if (b.y + b.radius > 316) { b.y = 316 - b.radius; b.vy *= -1; }
 
         // Check player collision
         const dist = Math.hypot(b.x - state.px, b.y - (state.py - 16));
@@ -186,25 +186,25 @@ export function BallRushGame({ character, sprites, onReward, onExit, reducedMoti
       state.activeScore += Math.round(dt * 12 * character.upgrades.aura);
 
       // RENDER
-      ctx.clearRect(0, 0, 760, 360);
+      ctx.clearRect(0, 0, 640, 320);
 
       // Arena background
       ctx.fillStyle = "#efefed";
-      ctx.fillRect(0, 0, 760, 360);
+      ctx.fillRect(0, 0, 640, 320);
 
       // Arena boundary line
       ctx.strokeStyle = "#131313";
-      ctx.lineWidth = 4;
-      ctx.strokeRect(6, 6, 748, 348);
+      ctx.lineWidth = 3;
+      ctx.strokeRect(4, 4, 632, 312);
 
       // Draw grid lines
       ctx.strokeStyle = "#dedbcf";
       ctx.lineWidth = 1;
-      for (let x = 40; x < 760; x += 40) {
-        ctx.beginPath(); ctx.moveTo(x, 6); ctx.lineTo(x, 354); ctx.stroke();
+      for (let x = 30; x < 640; x += 30) {
+        ctx.beginPath(); ctx.moveTo(x, 4); ctx.lineTo(x, 316); ctx.stroke();
       }
-      for (let y = 40; y < 360; y += 40) {
-        ctx.beginPath(); ctx.moveTo(6, y); ctx.lineTo(754, y); ctx.stroke();
+      for (let y = 30; y < 320; y += 30) {
+        ctx.beginPath(); ctx.moveTo(4, y); ctx.lineTo(636, y); ctx.stroke();
       }
 
       // Draw Pickups
@@ -280,22 +280,22 @@ export function BallRushGame({ character, sprites, onReward, onExit, reducedMoti
   // Touch Virtual Joystick for mobile
   function handleTouchDirection(dir: "up" | "down" | "left" | "right") {
     const s = gameState.current;
-    if (dir === "up") s.py = Math.max(30, s.py - 30);
-    if (dir === "down") s.py = Math.min(340, s.py + 30);
-    if (dir === "left") s.px = Math.max(20, s.px - 30);
-    if (dir === "right") s.px = Math.min(740, s.px + 30);
+    if (dir === "up") s.py = Math.max(35, s.py - 25);
+    if (dir === "down") s.py = Math.min(295, s.py + 25);
+    if (dir === "left") s.px = Math.max(25, s.px - 25);
+    if (dir === "right") s.px = Math.min(615, s.px + 25);
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", width: "100%" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", width: "100%", maxWidth: "760px", padding: "0 8px" }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", width: "100%", maxWidth: "660px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", width: "100%", padding: "0 4px", fontSize: "11px" }}>
         <div>
           <b>SCORE: {score}</b> · Time Left: {timeLeft}s
         </div>
         <div>
           <b>Shields:</b> {"♥ ".repeat(Math.max(0, gameState.current.lives))}
         </div>
-        <div style={{ color: "#2e7d32", fontSize: "12px" }}>
+        <div style={{ color: "#2e7d32", fontWeight: "bold" }}>
           Parts: {Object.entries(partsFound).map(([k, v]) => `${k} x${v}`).join(", ") || "None"}
         </div>
       </div>
@@ -303,12 +303,13 @@ export function BallRushGame({ character, sprites, onReward, onExit, reducedMoti
       <div style={{ position: "relative" }}>
         <canvas
           ref={canvasRef}
-          width={760}
-          height={360}
+          width={640}
+          height={320}
           style={{
             border: "2px solid #131313",
             background: "#efefed",
-            boxShadow: "4px 4px 0 #bbb",
+            boxShadow: "3px 3px 0 #c5c2bb",
+            display: "block",
             maxWidth: "100%",
           }}
         />
@@ -331,19 +332,22 @@ export function BallRushGame({ character, sprites, onReward, onExit, reducedMoti
             style={{
               position: "absolute",
               inset: 0,
-              background: "rgba(0,0,0,0.6)",
+              background: "rgba(19,19,19,0.85)",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
               color: "#fff",
-              gap: "14px",
+              gap: "10px",
+              padding: "12px",
+              textAlign: "center",
             }}
           >
-            <h2 style={{ margin: 0, letterSpacing: "0.1em" }}>SURVIVAL TRIAL OVER!</h2>
-            <p>Score: {score} pts · Parts Retrieved: {Object.values(partsFound).reduce((a, b) => a + b, 0)}</p>
+            <h2 style={{ margin: 0, letterSpacing: "0.08em", fontSize: "16px" }}>SURVIVAL TRIAL OVER!</h2>
+            <p style={{ margin: 0, fontSize: "12px" }}>Score: {score} pts · Parts Retrieved: {Object.values(partsFound).reduce((a, b) => a + b, 0)}</p>
             <button
-              className="btn-retro primary"
+              className="btn-tactile primary"
+              style={{ fontSize: "11px", padding: "6px 14px" }}
               onClick={() => {
                 onReward(score, partsFound);
                 onExit();
@@ -355,9 +359,9 @@ export function BallRushGame({ character, sprites, onReward, onExit, reducedMoti
         )}
       </div>
 
-      <div style={{ display: "flex", justifyContent: "space-between", width: "100%", maxWidth: "760px" }}>
-        <span style={{ fontSize: "11px", color: "#666" }}>Controls: [W A S D / Arrow Keys] Move & Dodge</span>
-        <button className="btn-retro" onClick={onExit}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", padding: "0 4px" }}>
+        <span style={{ fontSize: "10px", color: "#666" }}>Controls: [W A S D / Arrow Keys] Move & Dodge</span>
+        <button className="btn-tactile" style={{ fontSize: "10px", padding: "3px 8px" }} onClick={onExit}>
           Quit to Hub
         </button>
       </div>

@@ -1,32 +1,90 @@
-# Friend Spotlight: Trials & Forge
+# Rare Friends · Character Spotlight Studio
 
-**Builder / contact:** Rare Friends Builder
+A tactile retro arcade suite where your Rare Friends Generations NFT stars across 4 mini-games, leveling up through 5 modular component upgrades and simulated on-chain artifact forging with FriendSDK.
 
-**Category:** Character Spotlight
+- **Builder / contact:** [@Emer](https://github.com/Emer)
+- **Category:** Character Spotlight
+- **Source:** [games/character-spotlight](https://github.com/spokesz/friendsdk/tree/master/games/character-spotlight)
+- **Stack:** FriendSDK v0.1.4, TypeScript, React, HTML5 Canvas, Vanilla CSS
 
-**Stack:** FriendSDK v0.1.4, TypeScript, React, HTML5 Canvas, CSS3 retro design system (`"Courier New", monospace`).
+---
 
-## Overview
-**Friend Spotlight: Trials & Forge** is an interactive multi-game experience built specifically for the **Character Spotlight** category in the Rare Friends Vibeathon. 
+## 1. What did you build?
 
-Your controlled character is your actual hardwired **Rare Friends Generations NFT**, rendered directly from on-chain sprite data with pixel-perfect animation and directional walk cycles.
+**Character Spotlight Studio** turns the player's connected Rare Friends NFT into the central protagonist of a retro arcade studio hub:
+- **Hero Showcase Stage:** A real-time pixelated dynamic character doll stage rendering your Generation 0 or 1+ Rare Friend with dynamic walk cycles and glowing aura tiers.
+- **5 Modular Component Upgrades:**
+  1. *Core Power* (improves power output and drop rates)
+  2. *Optics Visor* (magnet pull in Fruit Game & visor lenses)
+  3. *Nano Plating* (extra shield hits in Ball Rush & Parkour Dash)
+  4. *Aura Spark* (multiplies score payouts across all games)
+  5. *Thruster Boots* (boosts speed and jump height in runner trials)
+- **Ascension System:** Players must upgrade all 5 modular components to ascend their Friend to the next tier level.
+- **FriendSDK Artifact Forge:** Uses simulated Robinhood mainnet RF tokens & batteries to settle on-chain game plays, earning rare components (Core Fragments, Visor Lenses, Titanium Plates).
 
-### Core Features:
-1. **Interactive Central Hub:** Walk through the neon retro terminal hub or click interactive stations.
-2. **4 Dedicated Mini-Games:**
-   - **Block Puzzle:** Grid-based spatial block placement game where clearing lines scores points and drops rare part caches.
-   - **Parkour Dash (Obstacle Run):** Fast-paced side-scrolling platformer runner with jumping, slide-dodging, and coin/part collecting.
-   - **Obstacles Ball Rush:** Top-down physics-dodging survival arena where bouncing hazard balls rush toward you while collecting energy batteries and rare scrap.
-   - **Fruit Game (Catch Frenzy):** Reflex arcade catcher where falling cyber-fruits grant points, multipliers, and special drops while avoiding bomb hazards.
-3. **Character Customization & Modular Upgrades:**
-   - Your Friend features 5 modular upgrade slots:
-     - **Core / Frame** (Body chassis & durability)
-     - **Visor / Optics** (Sensor range & HUD clarity)
-     - **Armor / Plating** (Kinetic resistance & finish)
-     - **Aura / Energy Field** (Glow effects & visual flare)
-     - **Mobility / Jetpack** (Speed & movement trail)
-   - Every slot can be customized and leveled up using points earned in games or parts dropped during runs.
-   - **Progression Requirement:** To advance your character tier/level, you must unlock and upgrade *every* slot for the current level!
-4. **FriendSDK Economy Integration:**
-   - Uses FriendSDK's authoritative settlement loop for battery purchases and artifact forging.
-   - Simulated RF preview on Robinhood mainnet.
+---
+
+## 2. The 4 Arcade Cabinets
+
+1. **Cabinet 01: Block Puzzle**
+   - Classic falling tetromino spatial puzzle on a 10×18 grid.
+   - Smooth multi-step SRS wall-kicking, ghost drop projection, soft drop, and hard drop.
+   - Clears award score scaled by Aura Spark and drop rare Core Fragments.
+
+2. **Cabinet 02: Parkour Dash**
+   - High-speed side-scrolling obstacle runner with retro parallax cityscape and moving ground.
+   - Jump over spikes and slide underneath high hanging laser barriers.
+   - Collect floating coins and Jetpack Thruster parts while shielded by Nano Plating.
+
+3. **Cabinet 03: Ball Rush**
+   - 360° survival dodge arena.
+   - Weave past bouncing hazard orbs while vacuuming up energy batteries and Titanium Plates before time expires.
+
+4. **Cabinet 04: Fruit Game**
+   - Fast-paced arcade catcher.
+   - Catch apples, cyber berries, and golden melons to build up combo multipliers up to 8×.
+   - Features Optics Visor magnetic fruit pull while dodging hazard bombs.
+
+---
+
+## 3. How to Run Locally
+
+```bash
+# Clone the repository
+git clone https://github.com/spokesz/friendsdk.git
+cd friendsdk
+
+# Install dependencies (Node 22+)
+npm install
+
+# Run the Character Spotlight Game
+npm run dev:game -- games/character-spotlight --host 0.0.0.0 --port 4173
+```
+
+Open `http://localhost:4173/` in your browser. Connect a wallet holding a Rare Friends Generations NFT (or use preview mode).
+
+---
+
+## 4. RF Activity, Outcomes & Economy Authority
+
+FriendSDK acts as the authoritative outcome engine for the Artifact Forge:
+
+| Artifact | Probability | Reward |
+|---|---|---|
+| Common Scrap | 50.0% | 0.01 RF |
+| Nano Battery | 25.0% | 0.05 RF |
+| Turbo Booster | 15.0% | 0.10 RF |
+| Quantum Core | 7.0% | 0.25 RF |
+| Mythic Overdrive | 2.5% | 0.50 RF |
+| Friend Artifact | 0.5% | 2.00 RF |
+
+*Note: All economy values, RF tokens, and rewards are simulated for preview testing.*
+
+---
+
+## 5. Visual Aesthetics & Accessibility
+
+- **Font:** Strictly `"Courier New", monospace` across all HUD, modals, dialogues, and cabinets.
+- **Palette:** Warm tactile cream (`#efefed`), dark ink (`#131313`), fresh grass (`#8fb45b`), and bridge gold (`#efd28a`).
+- **Responsive & Contained:** Viewport locked at 100% height with zero outer scrollbar overflow.
+- **Full Touch & Accessibility Controls:** On-screen virtual buttons for mobile devices, sound effects mute toggle, and reduced-motion option.

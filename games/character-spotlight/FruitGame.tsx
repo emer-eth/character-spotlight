@@ -84,33 +84,34 @@ export function FruitGame({ character, sprites, onReward, onExit, reducedMotion 
       let dx = 0;
       if (state.keys.has("a") || state.keys.has("arrowleft")) dx -= 1;
       if (state.keys.has("d") || state.keys.has("arrowright")) dx += 1;
-      state.px = Math.max(35, Math.min(725, state.px + dx * state.speed * dt));
+      state.px = Math.max(35, Math.min(605, state.px + dx * state.speed * dt));
 
-      // Item spawning
+      // Item spawning within [40, 600]
       spawnTimer += dt;
       if (spawnTimer > 0.45) {
         spawnTimer = 0;
         const r = Math.random();
+        const spawnX = 40 + Math.random() * 560;
         if (r < 0.45) {
           // Normal Apple
-          state.items.push({ x: 40 + Math.random() * 680, y: -20, vy: 160 + Math.random() * 80, type: "apple", points: 30, radius: 12 });
+          state.items.push({ x: spawnX, y: -20, vy: 160 + Math.random() * 80, type: "apple", points: 30, radius: 12 });
         } else if (r < 0.70) {
           // Cyber Berry
-          state.items.push({ x: 40 + Math.random() * 680, y: -20, vy: 200 + Math.random() * 90, type: "berry", points: 60, radius: 10 });
+          state.items.push({ x: spawnX, y: -20, vy: 200 + Math.random() * 90, type: "berry", points: 60, radius: 10 });
         } else if (r < 0.82) {
           // Golden Melon
-          state.items.push({ x: 40 + Math.random() * 680, y: -20, vy: 240 + Math.random() * 110, type: "golden-melon", points: 150, radius: 16 });
+          state.items.push({ x: spawnX, y: -20, vy: 240 + Math.random() * 110, type: "golden-melon", points: 150, radius: 16 });
         } else if (r < 0.93) {
           // Hazard Bomb
-          state.items.push({ x: 40 + Math.random() * 680, y: -20, vy: 180 + Math.random() * 70, type: "bomb", points: -50, radius: 14 });
+          state.items.push({ x: spawnX, y: -20, vy: 180 + Math.random() * 70, type: "bomb", points: -50, radius: 14 });
         } else {
           // Part Drop!
-          state.items.push({ x: 40 + Math.random() * 680, y: -20, vy: 140, type: "part", name: "Visor Lens", points: 100, radius: 14 });
+          state.items.push({ x: spawnX, y: -20, vy: 140, type: "part", name: "Visor Lens", points: 100, radius: 14 });
         }
       }
 
       // Update falling items
-      const basketY = 300;
+      const basketY = 275;
       for (let i = state.items.length - 1; i >= 0; i--) {
         const item = state.items[i];
         item.y += item.vy * dt;
@@ -148,7 +149,7 @@ export function FruitGame({ character, sprites, onReward, onExit, reducedMotion 
         }
 
         // Off-screen ground collision
-        if (item.y > 360) {
+        if (item.y > 330) {
           if (item.type !== "bomb" && item.type !== "part") {
             state.activeCombo = 1; // Missed fruit resets combo
             setCombo(1);
@@ -158,16 +159,16 @@ export function FruitGame({ character, sprites, onReward, onExit, reducedMotion 
       }
 
       // RENDER
-      ctx.clearRect(0, 0, 760, 360);
+      ctx.clearRect(0, 0, 640, 320);
 
       // Orchard Sky & Ground
       ctx.fillStyle = "#eaf2dd";
-      ctx.fillRect(0, 0, 760, 310);
+      ctx.fillRect(0, 0, 640, 275);
       ctx.fillStyle = "#8fb45b";
-      ctx.fillRect(0, 310, 760, 50);
+      ctx.fillRect(0, 275, 640, 45);
       ctx.strokeStyle = "#131313";
       ctx.lineWidth = 2;
-      ctx.strokeRect(0, 310, 760, 50);
+      ctx.strokeRect(0, 275, 640, 45);
 
       // Draw Falling Items
       for (const item of state.items) {
@@ -221,10 +222,10 @@ export function FruitGame({ character, sprites, onReward, onExit, reducedMotion 
 
       // Draw Catcher Basket on Player
       ctx.fillStyle = "#c9bc94";
-      ctx.fillRect(state.px - 28, 275, 56, 12);
+      ctx.fillRect(state.px - 28, 255, 56, 12);
       ctx.strokeStyle = "#131313";
       ctx.lineWidth = 2;
-      ctx.strokeRect(state.px - 28, 275, 56, 12);
+      ctx.strokeRect(state.px - 28, 255, 56, 12);
 
       // Draw Player Friend
       const facing = dx < 0 ? "left" : "right";
@@ -232,7 +233,7 @@ export function FruitGame({ character, sprites, onReward, onExit, reducedMotion 
         ctx,
         sprites,
         state.px,
-        320,
+        295,
         facing,
         dx !== 0,
         Math.floor(now / 100) % 8,
@@ -255,15 +256,15 @@ export function FruitGame({ character, sprites, onReward, onExit, reducedMotion 
   }, [character, sprites]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", width: "100%" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", width: "100%", maxWidth: "760px", padding: "0 8px" }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", width: "100%", maxWidth: "660px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", width: "100%", padding: "0 4px", fontSize: "11px" }}>
         <div>
           <b>SCORE: {score}</b> · Combo: <span style={{ color: "#e65100", fontWeight: "bold" }}>{combo}x</span>
         </div>
         <div>
           <b>Time: {timeLeft}s</b> · Shield: {"♥ ".repeat(Math.max(0, gameState.current.lives))}
         </div>
-        <div style={{ color: "#2e7d32", fontSize: "12px" }}>
+        <div style={{ color: "#2e7d32", fontWeight: "bold" }}>
           Parts: {Object.entries(partsFound).map(([k, v]) => `${k} x${v}`).join(", ") || "None"}
         </div>
       </div>
@@ -271,22 +272,23 @@ export function FruitGame({ character, sprites, onReward, onExit, reducedMotion 
       <div style={{ position: "relative" }}>
         <canvas
           ref={canvasRef}
-          width={760}
-          height={360}
+          width={640}
+          height={320}
           style={{
             border: "2px solid #131313",
             background: "#eaf2dd",
-            boxShadow: "4px 4px 0 #bbb",
+            boxShadow: "3px 3px 0 #c5c2bb",
+            display: "block",
             maxWidth: "100%",
           }}
         />
 
         {/* Mobile controls */}
-        <div style={{ position: "absolute", bottom: "16px", left: "16px", display: "flex", gap: "12px" }}>
+        <div style={{ position: "absolute", bottom: "12px", left: "12px", display: "flex", gap: "10px" }}>
           <button
             type="button"
             className="touch-btn"
-            style={{ width: "60px", height: "50px" }}
+            style={{ width: "52px", height: "48px", borderRadius: "8px", border: "2px solid #131313", boxShadow: "2px 2px 0 #131313" }}
             onPointerDown={() => gameState.current.keys.add("arrowleft")}
             onPointerUp={() => gameState.current.keys.delete("arrowleft")}
           >
@@ -295,7 +297,7 @@ export function FruitGame({ character, sprites, onReward, onExit, reducedMotion 
           <button
             type="button"
             className="touch-btn"
-            style={{ width: "60px", height: "50px" }}
+            style={{ width: "52px", height: "48px", borderRadius: "8px", border: "2px solid #131313", boxShadow: "2px 2px 0 #131313" }}
             onPointerDown={() => gameState.current.keys.add("arrowright")}
             onPointerUp={() => gameState.current.keys.delete("arrowright")}
           >
@@ -308,19 +310,22 @@ export function FruitGame({ character, sprites, onReward, onExit, reducedMotion 
             style={{
               position: "absolute",
               inset: 0,
-              background: "rgba(0,0,0,0.6)",
+              background: "rgba(19,19,19,0.85)",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
               color: "#fff",
-              gap: "14px",
+              gap: "10px",
+              padding: "12px",
+              textAlign: "center",
             }}
           >
-            <h2 style={{ margin: 0, letterSpacing: "0.1em" }}>HARVEST TRIAL OVER!</h2>
-            <p>Total Score: {score} pts · Parts Retrieved: {Object.values(partsFound).reduce((a, b) => a + b, 0)}</p>
+            <h2 style={{ margin: 0, letterSpacing: "0.08em", fontSize: "16px" }}>HARVEST TRIAL OVER!</h2>
+            <p style={{ margin: 0, fontSize: "12px" }}>Total Score: {score} pts · Parts Retrieved: {Object.values(partsFound).reduce((a, b) => a + b, 0)}</p>
             <button
-              className="btn-retro primary"
+              className="btn-tactile primary"
+              style={{ fontSize: "11px", padding: "6px 14px" }}
               onClick={() => {
                 onReward(score, partsFound);
                 onExit();
@@ -332,9 +337,9 @@ export function FruitGame({ character, sprites, onReward, onExit, reducedMotion 
         )}
       </div>
 
-      <div style={{ display: "flex", justifyContent: "space-between", width: "100%", maxWidth: "760px" }}>
-        <span style={{ fontSize: "11px", color: "#666" }}>Controls: [A / D or Arrow Keys] Catch Fruits · Avoid Bombs</span>
-        <button className="btn-retro" onClick={onExit}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", padding: "0 4px" }}>
+        <span style={{ fontSize: "10px", color: "#666" }}>Controls: [A / D or Arrow Keys] Catch Fruits · Avoid Bombs</span>
+        <button className="btn-tactile" style={{ fontSize: "10px", padding: "3px 8px" }} onClick={onExit}>
           Quit to Hub
         </button>
       </div>

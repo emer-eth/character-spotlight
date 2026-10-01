@@ -181,25 +181,25 @@ export function ParkourDashGame({ character, sprites, onReward, onExit, reducedM
       }
 
       // RENDER
-      ctx.clearRect(0, 0, 760, 360);
+      ctx.clearRect(0, 0, 620, 290);
 
       // Parallax Cityscape / Background
       ctx.fillStyle = "#dfe7d5";
-      ctx.fillRect(0, 0, 760, 360);
+      ctx.fillRect(0, 0, 640, 320);
 
       // Moving ground grid
       ctx.fillStyle = "#8fb45b";
-      ctx.fillRect(0, FLOOR_Y, 760, 360 - FLOOR_Y);
+      ctx.fillRect(0, FLOOR_Y, 640, 320 - FLOOR_Y);
       ctx.fillStyle = "#6e8e42";
       const groundOffset = (state.activeDistance % 40);
-      for (let gx = -groundOffset; gx < 760; gx += 40) {
-        ctx.fillRect(gx, FLOOR_Y, 3, 360 - FLOOR_Y);
+      for (let gx = -groundOffset; gx < 640; gx += 40) {
+        ctx.fillRect(gx, FLOOR_Y, 3, 320 - FLOOR_Y);
       }
       ctx.strokeStyle = "#131313";
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(0, FLOOR_Y);
-      ctx.lineTo(760, FLOOR_Y);
+      ctx.lineTo(640, FLOOR_Y);
       ctx.stroke();
 
       // Draw obstacles
@@ -271,15 +271,15 @@ export function ParkourDashGame({ character, sprites, onReward, onExit, reducedM
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", width: "100%" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", width: "100%", maxWidth: "760px", padding: "0 8px" }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", width: "100%", maxWidth: "660px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", width: "100%", padding: "0 4px", fontSize: "11px" }}>
         <div>
           <b>SCORE: {score}</b> · Distance: {distance}m
         </div>
         <div>
           <b>Shield HP:</b> {"♥ ".repeat(Math.max(0, gameState.current.lives))}
         </div>
-        <div style={{ color: "#2e7d32", fontSize: "12px" }}>
+        <div style={{ color: "#2e7d32", fontWeight: "bold" }}>
           Parts: {Object.entries(partsFound).map(([k, v]) => `${k} x${v}`).join(", ") || "None"}
         </div>
       </div>
@@ -287,22 +287,23 @@ export function ParkourDashGame({ character, sprites, onReward, onExit, reducedM
       <div style={{ position: "relative" }}>
         <canvas
           ref={canvasRef}
-          width={760}
-          height={360}
+          width={640}
+          height={320}
           style={{
             border: "2px solid #131313",
             background: "#dfe7d5",
-            boxShadow: "4px 4px 0 #bbb",
+            boxShadow: "3px 3px 0 #c5c2bb",
+            display: "block",
             maxWidth: "100%",
           }}
         />
 
         {/* Mobile On-Screen Action Buttons */}
-        <div style={{ position: "absolute", bottom: "16px", right: "16px", display: "flex", gap: "10px" }}>
+        <div style={{ position: "absolute", bottom: "12px", right: "12px", display: "flex", gap: "8px" }}>
           <button
             type="button"
             className="touch-btn"
-            style={{ width: "56px", height: "56px", borderRadius: "28px" }}
+            style={{ width: "52px", height: "48px", borderRadius: "8px", border: "2px solid #131313", boxShadow: "2px 2px 0 #131313" }}
             onPointerDown={handleTouchJump}
           >
             JUMP
@@ -310,7 +311,7 @@ export function ParkourDashGame({ character, sprites, onReward, onExit, reducedM
           <button
             type="button"
             className="touch-btn"
-            style={{ width: "56px", height: "56px", borderRadius: "28px" }}
+            style={{ width: "52px", height: "48px", borderRadius: "8px", border: "2px solid #131313", boxShadow: "2px 2px 0 #131313" }}
             onPointerDown={() => handleTouchSlide(true)}
             onPointerUp={() => handleTouchSlide(false)}
           >
@@ -323,35 +324,36 @@ export function ParkourDashGame({ character, sprites, onReward, onExit, reducedM
             style={{
               position: "absolute",
               inset: 0,
-              background: "rgba(0,0,0,0.6)",
+              background: "rgba(19,19,19,0.85)",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
               color: "#fff",
-              gap: "14px",
+              gap: "10px",
+              padding: "12px",
+              textAlign: "center",
             }}
           >
-            <h2 style={{ margin: 0, letterSpacing: "0.1em" }}>RUN COMPLETE!</h2>
-            <p>You survived {distance}m and accumulated {score} pts!</p>
-            <div style={{ display: "flex", gap: "12px" }}>
-              <button
-                className="btn-retro primary"
-                onClick={() => {
-                  onReward(score, partsFound);
-                  onExit();
-                }}
-              >
-                Bank Points & Return
-              </button>
-            </div>
+            <h2 style={{ margin: 0, letterSpacing: "0.08em", fontSize: "16px" }}>RUN COMPLETE!</h2>
+            <p style={{ margin: 0, fontSize: "12px" }}>You survived {distance}m and accumulated {score} pts!</p>
+            <button
+              className="btn-tactile primary"
+              style={{ fontSize: "11px", padding: "6px 14px" }}
+              onClick={() => {
+                onReward(score, partsFound);
+                onExit();
+              }}
+            >
+              Bank Points & Return
+            </button>
           </div>
         )}
       </div>
 
-      <div style={{ display: "flex", justifyContent: "space-between", width: "100%", maxWidth: "760px" }}>
-        <span style={{ fontSize: "11px", color: "#666" }}>Controls: [W / Space] Jump · [S / Down] Slide</span>
-        <button className="btn-retro" onClick={onExit}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", padding: "0 4px" }}>
+        <span style={{ fontSize: "10px", color: "#666" }}>Controls: [W / Space / Up] Jump · [S / Down] Slide</span>
+        <button className="btn-tactile" style={{ fontSize: "10px", padding: "3px 8px" }} onClick={onExit}>
           Quit to Hub
         </button>
       </div>

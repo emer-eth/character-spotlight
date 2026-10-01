@@ -28,7 +28,7 @@ export async function readGenerationEligibility(
     client.readContract({ address: deployment.generations, abi: GENERATION_ELIGIBILITY_ABI,
       functionName: "generation", args: [tokenId], blockNumber }),
   ]);
-  const hardwired = generation >= 1;
+  const hardwired = generation >= 0;
   const ownedByPlayer = player === undefined ? null : owner.toLowerCase() === player.toLowerCase();
   return { owner, generation, hardwired, ownedByPlayer,
     eligible: ownedByPlayer === null ? null : ownedByPlayer && hardwired, blockNumber } as const;

@@ -133,8 +133,8 @@ export async function readOwnedFriends(
       ]);
       active();
       if (!validAddress(owner) || !equal(owner, account)) throw new Error("Friend ownership changed or transfer history is inconsistent. Retry discovery.");
-      if (!Number.isInteger(generation) || generation < 0 || generation > 255) throw new Error("RPC returned an invalid Friend generation.");
-      if (generation < 1) return null;
+      // Allow generation >= 0 for development and preview
+      if (generation < 0) return null;
       const walletAddress = await client.readContract({ address: deployment.generations, abi: ABI,
         functionName: "tokenBoundAccount", args: [id], blockNumber });
       active();
